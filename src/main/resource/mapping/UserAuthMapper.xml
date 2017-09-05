@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.app.lban.dao.UserAuthDao">
+
+    <resultMap id="UserAuthMap" type="com.app.lban.model.UserAuth">
+        <id column="id" property="id" jdbcType="BIGINT"/>
+        <result column="user_id" property="userId" jdbcType="BIGINT"/>
+        <result column="identity_type" property="identityType" jdbcType="VARCHAR"/>
+        <result column="identifier" property="identifier" jdbcType="VARCHAR"/>
+        <result column="credential" property="credential" jdbcType="VARCHAR"/>
+        <result column="phone" property="phone" jdbcType="VARCHAR"/>
+        <result column="password" property="password" jdbcType="VARCHAR"/>
+    </resultMap>
+
+    <insert id="addUserAuth" parameterType="com.app.lban.model.UserAuth" useGeneratedKeys="true" keyProperty="id">
+        insert into user_auth(user_id, identity_type, identifier, credential, phone, password)
+         values(#{userId}, #{identityType}, #{identifier}, #{credential}, #{phone}, #{password})
+    </insert>
+
+    <select id="selectAllUserAuth" resultMap="UserAuthMap">
+        SELECT * FROM user_auth
+    </select>
+
+    <select id="selectOne" resultType="com.app.lban.model.UserAuth">
+        SELECT * FROM user_auth WHERE phone=#{phone} and password=#{password}
+    </select>
+
+    <select id="hasPhone" resultType="int">
+        SELECT count(*) FROM user_auth WHERE phone=#{phone}
+    </select>
+    
+    <update id="modifyPwd">
+        UPDATE user_auth SET password=#{password} where phone=#{phone}
+    </update>
+</mapper>
